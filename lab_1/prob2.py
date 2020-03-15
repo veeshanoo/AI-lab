@@ -1,0 +1,1 @@
+print(":)") if input("Salut, {}, iti place laboratorul?\n".format(input("cum te numesti?\n"))) else print(":(")
