@@ -89,7 +89,7 @@ if __name__ == '__main__':
                 visited.append(PathNode(nxt, new_cost, current))
             else:
                 if new_cost < old_path_node.cost:
-                    open_list = open_list.filter(lambda x: x.node != old_path_node.node)
-                    visited = visited.filter(lambda x: x.node != old_path_node.node)
+                    open_list = [x for x in open_list if x.node != old_path_node.node]
+                    visited = [x for x in visited if x.node != old_path_node.node]
                     open_list.append(PathNode(nxt, new_cost, current))
                     visited.append(PathNode(nxt, new_cost, current))

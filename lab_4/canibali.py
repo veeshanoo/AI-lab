@@ -27,14 +27,17 @@ class Node:
             for cani_barca in range(cani_calatori + 1):
                 new_mal = 1 - mal_current
                 new_misi = misi - misi_barca
-                new_cani = cani- cani_barca
+                new_cani = cani - cani_barca
                 new_misi_opus = N - new_misi
                 new_cani_opus = N - new_cani
 
-                if (new_cani > new_misi):
+                if new_cani > new_misi > 0:
                     continue
 
-                if (new_cani_opus > new_misi_opus):
+                if new_cani_opus > new_misi_opus > 0:
+                    continue
+
+                if misi_barca + cani_barca == 0:
                     continue
 
                 new_state = [new_mal, [], []]
@@ -102,6 +105,7 @@ if __name__ == '__main__':
             break
 
         for nxt in current.node.expand():
+            # pp(nxt)
             new_cost = current.cost + 1
             old_path_node = next((node for node in visited if node.node == nxt), None)
 
@@ -110,7 +114,7 @@ if __name__ == '__main__':
                 visited.append(PathNode(nxt, new_cost, current))
             else:
                 if new_cost < old_path_node.cost:
-                    open_list = open_list.filter(lambda x: x.node != old_path_node.node)
-                    visited = visited.filter(lambda x: x.node != old_path_node.node)
+                    open_list = [x for x in open_list if x.node != old_path_node.node]
+                    visited = [x for x in visited if x.node != old_path_node.node]
                     open_list.append(PathNode(nxt, new_cost, current))
                     visited.append(PathNode(nxt, new_cost, current))

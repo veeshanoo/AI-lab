@@ -71,7 +71,7 @@ visited = []
 
 if __name__ == '__main__':
     # start_node = Node([5, 7, 2, 8, 0, 6, 3, 4, 1])
-    start_node = Node([1, 2, 3, 4, 5, 8, 6, 7, 0])
+    start_node = Node([6, 8, 5, 1, 0, 2, 7, 4, 3])
     target_node = Node([1, 2, 3, 4, 5, 6, 7, 8, 0])
 
     # We should check inversion parity, if odd -> no solution
@@ -115,7 +115,7 @@ if __name__ == '__main__':
                 else:
                     if new_cost < old_path_node.cost:
                         # pp(open_list)
-                        open_list = open_list.filter(lambda x: x.node != old_path_node.node)
-                        visited = visited.filter(lambda x: x.node != old_path_node.node)
+                        open_list = [x for x in open_list if x.node != old_path_node.node]
+                        visited = [x for x in visited if x.node != old_path_node.node]
                         open_list.append(PathNode(nxt, new_cost, current))
                         visited.append(PathNode(nxt, new_cost, current))
