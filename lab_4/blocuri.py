@@ -42,8 +42,8 @@ class PathNode:
         self.node = node
         self.cost = cost
 
-    def heuristic(self, target_node):
-        tg = target_node.config
+    def heuristic(self, target):
+        tg = target.config
         st = self.node.config
         cnt = 0
         for idx in range(0, len(tg)):
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         open_list.sort(key=lambda pth: pth.cost + pth.heuristic(target_node))
         current = open_list.pop(0)
         if current.node == target_node:
-            print("success " + str(current.cost))
+            print("Nr of moves: " + str(current.cost))
             it = current
             while True:
                 print(it.node)
@@ -79,6 +79,7 @@ if __name__ == '__main__':
                     break
                 it = it.parent_node
             break
+
         for nxt in current.node.expand():
             new_cost = current.cost + 1
             old_path_node = next((node for node in visited if node.node == nxt), None)

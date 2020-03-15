@@ -92,7 +92,7 @@ if __name__ == '__main__':
         open_list.sort(key=lambda pth: pth.cost + pth.heuristic())
         current = open_list.pop(0)
         if current.node == target_node:
-            print("Nr de miscari: " + str(current.cost))
+            print("Nr of moves: " + str(current.cost))
             it = current
             while True:
                 print(it.node)
