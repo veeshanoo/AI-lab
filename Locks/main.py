@@ -87,6 +87,10 @@ class PathNode:
         self.cost = cost
         self.parent_node = parent_node
 
+    def is_final(self, target):
+        lst = [x for x in self.node.config if x in target.config]
+        return len(lst) == KEY_LENGTH
+
     def heuristic1(self):
         return -min(self.node.config)
 
@@ -150,7 +154,7 @@ if __name__ == '__main__':
     while len(open_list) > 0:
         open_list.sort(key=lambda pth: pth.cost + pth.heuristic())
         current = open_list.pop(0)
-        if current.node == target_node:
+        if current.is_final(target_node):
             solution_flag = True
             current.print_path()
             break
