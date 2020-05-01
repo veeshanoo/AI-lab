@@ -1,13 +1,14 @@
 from copy import deepcopy as dp
 from timeit import default_timer as timer
 
+f = open("output.txt", "w+")
 KEY_LENGTH = 7
 keys = []
 input_files = [
     'input1.txt',  # solution has length 7
     'input2.txt',  # solution has length 3
-    'input3.txt',  # no solution
-    'input4.txt',
+    'input3.txt',  # good heuristic gives length 6, bad one length 7
+    'input4.txt',  # no solution
 ]
 
 
@@ -91,18 +92,14 @@ class PathNode:
         lst = [x for x in self.node.config if x in target.config]
         return len(lst) == KEY_LENGTH
 
-    def heuristic1(self):
+    def heuristic1(self):  # good heuristic
         return -min(self.node.config)
 
-    def heuristic2(self):
+    def heuristic2(self):  # good heuristic
         return -min(self.node.config) + max(self.node.config)
 
-    def heuristic3(self):
-        ans = 0
-        # return -sum(self.node.config)
-        for i, val in enumerate(self.node.config):
-            ans -= val
-        return ans
+    def heuristic3(self):  # bad heuristic
+        return 2 * -sum(self.node.config)
 
     def heuristic(self):
         if PathNode.Type == 1:
@@ -118,11 +115,11 @@ class PathNode:
 
         self.parent_node.recursive_print()
         key = convert_key_back([self.node.config[i] - self.parent_node.node.config[i] for i in range(KEY_LENGTH)])
-        print("We use key: {} to get to lock configuration: {}".format(key, self.node))
+        print_to_file("We use key: {} to get to lock configuration: {}".format(key, self.node))
 
     def print_path(self):
-        print("Nr of moves: " + str(self.cost))
-        print("Initial state: {}".format(Node([-1 for i in range(KEY_LENGTH)])))
+        print_to_file("Nr of moves: " + str(self.cost))
+        print_to_file("Initial state: {}".format(Node([-1 for i in range(KEY_LENGTH)])))
         self.recursive_print()
 
     def __repr__(self):
@@ -138,10 +135,17 @@ def read_keys_file(file_name):
             keys.append(convert_key(line[:-1]))
 
 
+def print_to_file(output):
+    f.write(output + '\n')
+
+
 if __name__ == '__main__':
     start = timer()
 
-    read_keys_file(input_files[2])
+    PathNode.Type = 1
+    fileName = input_files[2]
+    print_to_file("We read from {} file".format(fileName))
+    read_keys_file(fileName)
     KEY_LENGTH = len(keys[0])
 
     start_node = Node([-1] * KEY_LENGTH)
@@ -180,7 +184,7 @@ if __name__ == '__main__':
                     visited.append(PathNode(nxt, new_cost, current))
 
     if not solution_flag:
-        print("No solution for this keys configuration")
+        print_to_file("No solution for this keys configuration")
 
     end = timer()
-    print('Program executed for {} seconds.'.format(end - start))
+    print_to_file('Program executed for {} seconds.'.format(end - start))
